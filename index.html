@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script>
+        self.ModelViewerElement = self.ModelViewerElement || {};
+        self.ModelViewerElement.meshoptDecoderLocation = 'https://unpkg.com/meshoptimizer@0.18.1/meshopt_decoder.js';
+    </script>
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karson Walton | Aerospace & Mechanical Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+    
+
+    <style>
+
+        model-viewer {
+        /* Enforces the canvas to render sharply even when multiple models exist */
+            --min-hotspot-opacity: 0; 
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;   
+        }
+
+        /* Force the internal canvas to match device pixel density */
+        model-viewer::part(default-canvas) {
+            width: 100%;
+            height: 100%;
+        }
+
+        :root {
+            --bg-dark: #12161a;
+            --bg-card: #1a2026;       
+            --text-main: #f3f4f6;     
+            --text-muted: #9ca3af;    
+            --accent-peach: #ffb088;   
+            --border-color: #2e3742;  
+            
+            --status-done: #22c55e;   
+            --status-active: #eab308; 
+            --status-future: #4b5563;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding-top: 75px; 
+            overflow-x: hidden;
+        }
+
+        /* Fixed Navigation HUD */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(18, 22, 26, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 5%;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-rocket-track {
+            position: absolute;
+            bottom: -1px; 
+            left: 0;
+            width: 100%;
+            height: 20px;       
+            overflow: visible;
+            pointer-events: none;
+            z-index: 1002;     
+        }
+
+        .rocket-assembly {
+            position: absolute;
+            left: -130px;
+            top: 10px;          
+            width: 120px;       
+            height: 20px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            animation: radarTravel 14s linear infinite;
+            z-index: 1003;
+        }
+
+        @media (max-width: 768px) {
+            .nav-rocket-track {
+                display: block !important;
+                overflow: visible !important; 
+            }
+            
+            .rocket-assembly {
+                left: -130px !important;
+                top: 10px !important;
+                opacity: 1 !important;
+                animation: radarTravel 14s linear infinite !important;
+            }
+
+            .course-node {
+                width: 175px !important;
+                min-width: 175px !important;
+                max-width: 175px !important;
+                flex: 0 0 175px !important;
+                white-space: normal;
+            }
+        }
+
+        .blip-1 { animation-delay: 0s; }
+        .blip-2 { animation-delay: 4.66s; }
+        .blip-3 { animation-delay: 9.33s; }
+
+        @keyframes radarTravel {
+            0% { left: -130px; opacity: 0; }
+            1% { opacity: 1; }
+            98% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--accent-peach); }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--accent-peach); }
+
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 75px);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            padding: 0 10%;
+            gap: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            background-image: radial-gradient(rgba(46, 55, 66, 0.3) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-media-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .system-ticker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-peach);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+        }
+
+        .hero h1 span {
+            color: var(--accent-peach);
+            text-shadow: 0 0 15px rgba(255, 176, 136, 0.15);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 620px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            background-color: transparent;
+            color: var(--accent-peach);
+            border: 2px solid var(--accent-peach);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--accent-peach);
+            color: var(--bg-dark);
+            font-weight: 600;
+            box-shadow: 0 0 20px rgba(255, 176, 136, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .cta-secondary {
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .cta-secondary:hover {
+            background-color: var(--text-main);
+            color: var(--bg-dark);
+            border-color: var(--text-main);
+            box-shadow: 0 0 20px rgba(243, 244, 246, 0.15);
+        }
+
+        /* Profile HUD Frame */
+        .hud-profile-frame {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hud-profile-frame.is-hovered {
+            transform: translateY(-8px);
+            border-color: var(--accent-peach);
+            box-shadow: 0 12px 30px rgba(255, 176, 136, 0.1);
+        }
+
+        .hud-profile-frame img {
+            position: absolute;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            z-index: 1;
+            background-color: #161b20;
+        }
+
+        .hud-profile-frame::before {
+            content: '';
+            position: absolute;
+            top: 12px; left: 12px; width: 16px; height: 16px;
+            border-top: 2px solid var(--accent-peach);
+            border-left: 2px solid var(--accent-peach);
+            z-index: 3;
+        }
+        .hud-profile-frame::after {
+            content: '';
+            position: absolute;
+            bottom: 12px; right: 12px; width: 16px; height: 16px;
+            border-bottom: 2px solid var(--accent-peach);
+            border-right: 2px solid var(--accent-peach);
+            z-index: 3;
+        }
+
+        /* Interactive CAD Gallery */
+        .projects-section {
+            padding: 5rem 10%;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 2px;
+            background-color: var(--accent-peach);
+        }
+
+        .carousel-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .carousel-arrow {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .carousel-arrow:hover {
+            border-color: var(--accent-peach);
+            color: var(--bg-dark);
+            background-color: var(--accent-peach);
+        }
+
+        .projects-carousel-container {
+            width: 100%;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            display: flex;
+            gap: 2.5rem;
+            padding-top: 15px;
+            padding-bottom: 1.5rem;
+            scroll-snap-type: x mandatory;
+        }
+
+        .projects-carousel-container::-webkit-scrollbar { height: 6px; }
+        .projects-carousel-container::-webkit-scrollbar-track { background: var(--bg-dark); }
+        .projects-carousel-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .project-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            flex: 0 0 calc(46% - 1.25rem);
+            min-width: 320px;
+            scroll-snap-align: start;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-peach);
+            box-shadow: 0 12px 30px rgba(255, 176, 136, 0.1);
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 300px;
+            background-color: #161b20; 
+            --poster-color: transparent;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .project-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .project-tags {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-peach);
+            margin-bottom: 1rem;
+        }
+
+        .project-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .tech-specs {
+            margin-top: auto;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 1rem;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #a3a3a3;
+        }
+
+        /* "Starry Night" Themed High-Power Rocketry Section */
+        .launches-section {
+            padding: 5rem 10%;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(180deg, #090d12 0%, #05070a 100%);
+            overflow: hidden;
+        }
+
+        /* Twinkling Star Layer Effect */
+        .launches-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 45px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 220px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 280px 140px, #ffb088, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 420px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 600px 310px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2.5px 2.5px at 750px 190px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 910px 90px, #ffb088, rgba(0,0,0,0));
+            background-size: 450px 450px;
+            opacity: 0.4;
+            animation: starryTwinkle 5s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes starryTwinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
+        }
+
+        .launches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .launch-card {
+            background-color: rgba(26, 32, 38, 0.85); 
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(4px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .launch-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-peach);
+            box-shadow: 0 12px 35px rgba(255, 176, 136, 0.15);
+        }
+
+        /* portrait 3:4 Vertical Aspect Ratio */
+        .launch-media-wrapper {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background-color: #0b0f14;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .launch-media-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .launch-media-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #070a0e;
+            display: block;
+        }
+
+        .launch-info-block {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .launch-info-block h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--bg-dark);
+            background-color: var(--accent-peach);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            width: max-content;
+        }
+
+        .cert-badge.gallery-type {
+            background-color: transparent;
+            border: 1px solid var(--accent-peach);
+            color: var(--accent-peach);
+        }
+
+        .launch-info-block p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Mines Flowchart Monitor */
+        .mines-section {
+            padding: 5rem 10%;
+            background-color: rgba(26, 32, 38, 0.4);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .flowchart-legend {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+        .legend-box { width: 14px; height: 14px; border-radius: 3px; }
+
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            width: 100%;
+        }
+
+        .term-row {
+            display: grid;
+            grid-template-columns: 140px repeat(5, 1fr);
+            gap: 1rem;
+            align-items: center;
+            min-width: 1000px;
+        }
+
+        .term-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--accent-peach);
+            border-left: 2px solid var(--accent-peach);
+            padding-left: 0.5rem;
+        }
+
+        .course-node {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .course-node span {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .node-done { border-left: 4px solid var(--status-done); }
+        .node-active { border-left: 4px solid var(--status-active); }
+        .node-future { border-left: 4px solid var(--status-future); opacity: 0.6; }
+
+        .course-node:hover {
+            transform: translateY(-2px);
+            background-color: var(--bg-card);
+        }
+
+        /* Resume Section Layout */
+        .resume-section {
+            padding: 6rem 10%;
+            background-color: var(--bg-card);
+        }
+
+        .resume-container {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .skill-group { margin-bottom: 2rem; }
+        .skill-group h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--accent-peach);
+            padding-left: 0.5rem;
+        }
+
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+        .skill-badge {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .resume-display-wrapper { display: flex; flex-direction: column; gap: 1.5rem; }
+        .resume-viewer-frame {
+            width: 100%;
+            height: 500px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .resume-actions-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-dark);
+            border: 1px dashed var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+        }
+
+        .download-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #a3a3a3;
+        }
+
+        .mobile-resume-trigger {
+            display: none;
+            width: 100%;
+            padding: 1.2rem;
+            background-color: rgba(255, 176, 136, 0.1);
+            border: 2px dashed var(--accent-peach);
+            color: var(--accent-peach);
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 4rem 10%;
+                gap: 3rem;
+            }
+            .resume-container { 
+                grid-template-columns: 1fr;
+                gap: 3rem; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 130px;
+            }
+
+            nav { 
+                padding: 1rem 5%;
+                flex-direction: column; 
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .nav-links {
+                width: 100%;
+                display: flex;
+                justify-content: space-between; 
+            }
+            .nav-links a { 
+                margin-left: 0;
+                font-size: 0.85rem; 
+            }
+
+            .nav-rocket-track {
+                display: block !important;
+                height: 20px;
+                bottom: 0px; 
+            }
+            .rocket-assembly {
+                transform: scale(0.55);
+                top: 0px; 
+            }
+
+            .mines-section, .launches-section {
+                padding: 3.5rem 5%;
+            }
+            .matrix-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+                overflow-x: auto; 
+                padding-left: 2px; 
+                align-items: flex-start; 
+                -webkit-overflow-scrolling: touch;
+            }
+            .term-row {
+                display: flex !important;
+                gap: 1rem;
+                width: max-content; 
+                min-width: 0; 
+            }
+            .term-label {
+                width: 120px;
+                flex-shrink: 0;
+                font-size: 0.8rem;
+            }
+            .course-node {
+                width: 175px;
+                min-width: 175px;
+                max-width: 175px;
+                flex-shrink: 0; 
+                word-wrap: break-word;
+            }
+
+            .projects-carousel-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 0; /* Removing the 10% to fit 2 evenly */
+}
+
+.project-card {
+    flex: 0 0 calc(50% - 10px) !important;
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+    min-width: 0; /* Overriding your 270px min-width */
+}
+
+            .resume-viewer-frame {
+                height: 280px;
+            }
+            .mobile-resume-trigger {
+                display: block;
+            }
+            .hero h1 { font-size: 2.3rem; }
+            .projects-section, .resume-section { padding: 3.5rem 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">K.WALTON_ <span>// MECHANICAL</span></div>
+        
+        <div class="nav-rocket-track">
+            <div class="rocket-assembly blip-1">
+                <svg viewBox="0 0 120 32" width="120" height="32" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trail-grad-scaled-1" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
+                            <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
+                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
+                        </linearGradient>
+                    </defs>
+                    <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-1)" stroke-width="3" stroke-linecap="round" />
+                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
+                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
+                </svg>
+            </div>
+            <div class="rocket-assembly blip-2">
+                <svg viewBox="0 0 120 32" width="120" height="32" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trail-grad-scaled-2" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
+                            <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
+                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
+                        </linearGradient>
+                    </defs>
+                    <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-2)" stroke-width="3" stroke-linecap="round" />
+                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
+                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
+                </svg>
+            </div>
+            <div class="rocket-assembly blip-3">
+                <svg viewBox="0 0 120 32" width="120" height="32" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="trail-grad-scaled-3" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
+                            <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
+                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
+                        </linearGradient>
+                    </defs>
+                    <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-3)" stroke-width="3" stroke-linecap="round" />
+                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
+                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="#projects">CAD Portfolio</a>
+            <a href="#launches">Project Starry Night</a>
+            <a href="#flowchart">Mines Flowchart</a>
+            <a href="#resume">Resume</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="system-ticker">
+                <span>[SYSTEM_STATUS: ACTIVE]</span>
+            </div>
+            <h1>Hi, I'm <span>Karson Walton</span>.</h1>
+            <p>Mechanical Engineering student at Colorado School of Mines. High-power rocketry technician (NAR/TRA Level 1 & Level 2 certified) and roboticist driven by structural design, rapid prototyping, and physical testing. Experienced in creating robust mechanical systems from initial CAD concept to physical hardware deployment.</p>
+            <div class="hero-ctas">
+                <a href="#projects" class="cta-btn">View CAD Portfolio</a>
+                <a href="#resume" class="cta-btn cta-secondary">View Resume</a>
+            </div>
+        </div>
+
+        <div class="hero-media-container">
+            <div class="hud-profile-frame" id="liftFrame">
+                <img src="assets/profile.jpg" alt="Karson Walton">
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects-section">
+    <div class="section-header-container">
+        <h2 class="section-title">01 // Mechanical Design & Hardware Portfolio</h2>
+        <div class="carousel-controls">
+            <button class="carousel-arrow" id="prevBtn">&lt;</button>
+            <button class="carousel-arrow" id="nextBtn">&gt;</button>
+        </div>
+    </div>
+    
+    <div class="projects-carousel-container" id="carouselTrack">
+        <div class="project-card">
+            <model-viewer 
+    src="assets/cad5_final.glb" 
+    draco-decoder-path="https://www.gstatic.com/draco/versioned/decoders/1.5.6/"
+    alt="2024 Crescendo Competition Robot"
+    orientation="0deg -90deg 0deg" 
+    camera-controls 
+    auto-rotate 
+    loading="lazy"
+    reveal="auto"
+    interaction-prompt="none"
+    power-preference="high-performance"
+    minimum-render-scale="1"
+    shadow-intensity="1">
+</model-viewer>
+            <div class="project-info">
+                <h3>2024 "Crescendo" Competition Bot</h3>
+                <div class="project-tags">#FRC #ROBOTICS #MECHANICAL</div>
+                <p>Engineered a high-agility drivetrain and intake system for the 2024 Crescendo challenge, focusing on rapid note acquisition and high-precision launching.</p>
+            <div class="tech-specs">SPEC_01: Drive // Swerve Module Integration<br>SPEC_02: Payload // High-Speed Launcher Geometry</div>
+        </div>
+    </div>
+
+    <div class="project-card">
+        <model-viewer 
+    src="assets/cad6_final.glb" 
+    draco-decoder-path="https://www.gstatic.com/draco/versioned/decoders/1.5.6/"
+    alt="CAD 6 Model"
+    orientation="0deg -90deg 0deg" 
+    camera-controls 
+    auto-rotate 
+    loading="lazy"
+    reveal="auto"
+    interaction-prompt="none"
+    power-preference="high-performance"
+    minimum-render-scale="1"
+    shadow-intensity="1">
+</model-viewer>
+        <div class="project-info">
+            <h3>2025 "Reefscape" Competition Bot</h3>
+            <div class="project-tags">#FRC #CAD #STRUCTURES</div>
+            <p>Designed a custom elevator and end-effector assembly for the 2025 Reefscape season, optimized for efficient coral manipulation and stability during cycle operations.</p>
+            <div class="tech-specs">SPEC_01: Reach // Telescoping Elevator Arm<br>SPEC_02: Precision // End-Effector Tolerance Alignment</div>
+        </div>
+    </div>
+
+        <div class="project-card">
+            <model-viewer src="assets/cad2.gltf" alt="The JEFF Rocket Airframe Assembly" auto-rotate camera-controls camera-orbit="0deg 60deg auto" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" orientation="0deg -90deg 0deg" shadow-intensity="1.5" shadow-softness="0.8" exposure="1.2" environment-image="neutral" interaction-prompt="auto"></model-viewer>
+            <div class="project-info">
+                <h3>The "JEFF" High-Power Rocket</h3>
+                <div class="project-tags">#STRUCTURES #COMPOSITES #HARDWARE</div>
+                <p>Co-designed and constructed a high-power launch vehicle built to target 10,000 feet on a Cesaroni K480 propulsion stack.</p>
+                <div class="tech-specs">SPEC_01: Aero-Profile // Mach 1.7 Velocity Envelope<br>SPEC_02: Avionics Track // Telemetry & Action Logging</div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <model-viewer src="assets/cad1.gltf" alt="Collapsible Box Assembly" auto-rotate camera-controls camera-orbit="0deg 60deg auto" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" orientation="0deg -90deg 0deg" shadow-intensity="1.5" shadow-softness="0.8" exposure="1.2" environment-image="neutral" interaction-prompt="auto"></model-viewer>
+            <div class="project-info">
+                <h3>Collapsible Cargo Enclosure</h3>
+                <div class="project-tags">#LOGISTICS #KINEMATICS #LINKAGES</div>
+                <p>Designed a space-optimizing collapsible containment system for a Cornerstone design track.</p>
+                <div class="tech-specs">SPEC_01: Volumetric Delta // 72% Compression Index<br>SPEC_02: Tolerance Band // 0.15 mm Interlock</div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <model-viewer src="assets/cad3.gltf" alt="Compressed Air Engine Assembly" auto-rotate camera-controls camera-orbit="0deg 60deg auto" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" orientation="0deg -90deg 0deg" shadow-intensity="1.5" shadow-softness="0.8" exposure="1.2" environment-image="neutral" interaction-prompt="auto"></model-viewer>
+            <div class="project-info">
+                <h3>Pneumatic Displacement Engine</h3>
+                <div class="project-tags">#PROPULSION #THERMO #PROTOTYPING</div>
+                <p>A compressed-gas motor project evaluating low-friction rotary seals and valve-timing profiles.</p>
+                <div class="tech-specs">SPEC_01: Fluid Medium // Compressed Gas Array<br>SPEC_02: Materials // FDM Polyamide Formwork</div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <model-viewer src="assets/cad4.gltf" alt="Scales of Justice Assembly" auto-rotate camera-controls camera-orbit="0deg 60deg auto" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" orientation="0deg -90deg 0deg" shadow-intensity="1.5" shadow-softness="0.8" exposure="1.2" environment-image="neutral" interaction-prompt="auto"></model-viewer>
+            <div class="project-info">
+                <h3>Articulating Scales of Justice</h3>
+                <div class="project-tags">#ETHICS-TRACK #MODELING #GEOMETRY</div>
+                <p>Created as a visual display piece for an Engineering Ethics track at Mines.</p>
+                <div class="tech-specs">SPEC_01: Workflow // Image-to-Sketch Plane Mapping<br>SPEC_02: Joints // Free-Pivot Mechanical Balance</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="launches" class="launches-section">
+        <h2 class="section-title" style="margin-bottom: 3rem;">02 // High-Power Rocketry: Project "Starry Night"</h2>
+        
+        <div class="launches-grid">
+            <div class="launch-card">
+                <div class="launch-media-wrapper">
+                    <video autoplay loop muted controls playsinline preload="metadata">
+                        <source src="assets/l1-launch.mp4" type="video/mp4">
+                        [STREAM_ERROR: MP4_UNSUPPORTED_BY_BROWSER]
+                    </video>
+                </div>
+                <div class="launch-info-block">
+                    <div class="cert-badge">TRA / NAR LEVEL 1</div>
+                    <h3>L1 Certification</h3>
+                    <p>High-power verification milestone achieved using an H-class solid propellant configuration. Validated main parachute ejection timing, deployment load dispersion constraints, and structural recovery airframe integrity post-landing.</p>
+                    <div class="tech-specs">DATA_01: Motor Configuration // High-Impulse H-Class Stack<br>DATA_02: Recovery System // Mechanical Single Deployment</div>
+                </div>
+            </div>
+
+            <div class="launch-card">
+                <div class="launch-media-wrapper">
+                    <video autoplay loop muted controls playsinline preload="metadata">
+                        <source src="assets/l2-launch.mp4" type="video/mp4">
+                        [STREAM_ERROR: MP4_UNSUPPORTED_BY_BROWSER]
+                    </video>
+                </div>
+                <div class="launch-info-block">
+                    <div class="cert-badge">TRA / NAR LEVEL 2</div>
+                    <h3>L2 Certification</h3>
+                    <p>Advanced aerospace certification execution deploying reloadable J-motor propulsion geometries. Engineered redundant dual-altimeter electronics bays, tracking transponders, and reinforced airframe matrices to mitigate transonic buffeting forces.</p>
+                    <div class="tech-specs">DATA_01: Motor Configuration // J-Class Reloadable Solid Fuel<br>DATA_02: Recovery System // Dual-Deployment Flight Computer</div>
+                </div>
+            </div>
+
+            <div class="launch-card">
+                <div class="launch-media-wrapper">
+                    <img src="assets/starrynightplume.jpg" alt="Starry Night Exhaust Plume Profile">
+                </div>
+                <div class="launch-info-block">
+                    <div class="cert-badge gallery-type">FLIGHT PHOTOGRAPHY</div>
+                    <h3>Exhaust Plume</h3>
+                    <p>A close-up high-speed capture documenting the Mach disk structure and steady-state kinetic flow expanding from the convergent-divergent graphite nozzle throat assembly during stable ascent velocity vector arrays.</p>
+                    <div class="tech-specs">DATA_01: Image Core Name // starrynightplume.jpg<br>DATA_02: Analysis Metrics // Shock Diamonds & Thermal Core Boundary</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="flowchart" class="mines-section">
+        <h2 class="section-title" style="margin-bottom: 1rem;">03 // Mines Academic Flowchart Monitor</h2>
+        
+        <div class="flowchart-legend">
+            <div class="legend-item"><div class="legend-box" style="background-color: var(--status-done);"></div> Completed Course</div>
+            <div class="legend-item"><div class="legend-box" style="background-color: var(--status-active);"></div> Currently In Progress</div>
+            <div class="legend-item"><div class="legend-box" style="background-color: var(--status-future);"></div> Remaining Core Requirement</div>
+        </div>
+
+        <div class="matrix-container">
+            <div class="term-row">
+                <div class="term-label">TERM 1 (Completed)</div>
+                <div class="course-node node-done">CSM 101<span>Mines Success</span></div>
+                <div class="course-node node-done">HASS 100<span>Nature & Human Values</span></div>
+                <div class="course-node node-done">CHGN 121<span>Principles of Chem I</span></div>
+                <div class="course-node node-done">MATH 111<span>Calculus I</span></div>
+                <div class="course-node node-done">EDNS 151<span>Cornerstone Design I</span></div>
+            </div>
+
+            <div class="term-row">
+                <div class="term-label">TERM 2 (Completed)</div>
+                <div class="course-node node-done">MATH 112<span>Calculus II</span></div>
+                <div class="course-node node-done">PHGN 100<span>Physics I (Mechanics)</span></div>
+                <div class="course-node node-done">CSCI 128<span>Computer Sci for STEM</span></div>
+                <div class="course-node node-done">HASS 215<span>Human Systems / Futures</span></div>
+                <div class="course-node node-done">MATH 213<span>Calculus III</span></div>
+            </div>
+
+            <div class="term-row">
+                <div class="term-label">TERM 3 (In Progress)</div>
+                <div class="course-node node-done">PHGN 200<span>Physics II (Electromagnetism)</span></div>
+                <div class="course-node node-active">CSM 202<span>Student Wellness II</span></div>
+                <div class="course-node node-active">CEEN 241<span>Statics</span></div>
+                <div class="course-node node-active">MEGN 261<span>Thermodynamics I</span></div>
+                <div class="course-node node-active">MATH 225<span>Differential Equations</span></div>
+            </div>
+
+            <div class="term-row">
+                <div class="term-label">TERM 4 (Upcoming)</div>
+                <div class="course-node node-future">MEGN 200<span>ME Prog & Hardware Interface</span></div>
+                <div class="course-node node-future">MEGN 212<span>Intro to Solid Mechanics</span></div>
+                <div class="course-node node-future">MEGN 201<span>Intro to ME Design & Fab</span></div>
+                <div class="course-node node-future">EENG 281<span>Introduction to Circuits</span></div>
+                <div class="course-node node-future">MATH 307<span>Intro to Scientific Comput.</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" class="resume-section">
+        <h2 class="section-title">04 // Capabilities & Background</h2>
+        
+        <div class="resume-container">
+            <div class="skills-matrix">
+                <div class="skill-group">
+                    <h4>Engineering Tools & CAD</h4>
+                    <div class="skill-tags">
+                        <span class="skill-badge">SolidWorks (CAD, Assemblies, Complex Mates)</span>
+                        <span class="skill-badge">Technical Drawings & Geometric Tolerancing</span>
+                        <span class="skill-badge">Python Core Programming</span>
+                        <span class="skill-badge">UI Layout & Canva Media Asset Styling</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h4>Hands-On Fabrication & Hardware</h4>
+                    <div class="skill-tags">
+                        <span class="skill-badge">Machine Shop Tooling Enclosures</span>
+                        <span class="skill-badge">TRA / NAR Level 1 Rocketry Certification</span>
+                        <span class="skill-badge">TRA / NAR Level 2 Rocketry Certification</span>
+                        <span class="skill-badge">Composite Structure Alignment & Layup</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h4>Leadership, Community & Collaboration</h4>
+                    <div class="skill-tags">
+                        <span class="skill-badge">Cross-Functional Engineering Group Project Management</span>
+                        <span class="skill-badge">Technical Documentation, Standard Operating Procedures & Presentation Delivery</span>
+                        <span class="skill-badge">Peer Mentorship, Resource Organization & Collective Safety Monitoring</span>
+                        <span class="skill-badge">Interdependent System Syncing & Collaborative Problem Solving</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resume-display-wrapper">
+                <a href="assets/resume.pdf" target="_blank" class="mobile-resume-trigger">⚠️ Phone Display Notice: Tap Here to Open Full Multi-Page Resume</a>
+                <iframe src="assets/resume.pdf#toolbar=0" class="resume-viewer-frame" type="application/pdf"></iframe>
+                <div class="resume-actions-footer">
+                    <div class="download-meta">FILE: WALTON_ME_RESUME.PDF<br>METRIC: VERIFIED COMPLIANT</div>
+                    <a href="assets/resume.pdf" target="_blank" class="cta-btn" download>Download PDF Copy</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        nextBtn.addEventListener('click', () => {
+            const cardWidth = track.querySelector('.project-card').clientWidth + 40; 
+            track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const cardWidth = track.querySelector('.project-card').clientWidth + 40;
+            track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+        });
+
+        const liftFrame = document.getElementById('liftFrame');
+        liftFrame.addEventListener('mouseenter', () => {
+            liftFrame.classList.add('is-hovered');
+        });
+        liftFrame.addEventListener('mouseleave', () => {
+            liftFrame.classList.remove('is-hovered');
+        });
+    </script>
+</body>
+</html>
