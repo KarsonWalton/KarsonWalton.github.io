@@ -714,6 +714,13 @@
             font-size: 0.85rem;
             border-radius: 4px;
             font-weight: 500;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-badge:hover {
+            transform: translateY(-2px);
+            background-color: var(--bg-card);
         }
 
         .resume-display-wrapper { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -924,9 +931,103 @@
             transform: translateY(-1px);
             box-shadow: 0 8px 18px var(--accent-glow-strong);
         }
+
+        /* Mobile Disclaimer Banner */
+        #mobileDisclaimer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        #mobileDisclaimer.show {
+            display: flex;
+        }
+
+        .disclaimer-content {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-orange);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 176, 136, 0.2);
+        }
+
+        .disclaimer-content h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .disclaimer-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .disclaimer-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .disclaimer-btn {
+            padding: 0.8rem 1.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .disclaimer-btn.proceed {
+            background: var(--accent-orange);
+            color: var(--bg-primary);
+        }
+
+        .disclaimer-btn.proceed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 176, 136, 0.3);
+        }
+
+        .disclaimer-btn.secondary {
+            background: transparent;
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
+        }
+
+        .disclaimer-btn.secondary:hover {
+            background: rgba(255, 176, 136, 0.1);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
+    <!-- Mobile Disclaimer Banner -->
+    <div id="mobileDisclaimer">
+        <div class="disclaimer-content">
+            <h2>⚠️ Mobile Layout Notice</h2>
+            <p>This portfolio is optimized for desktop viewing. Some interactive features and 3D models may not display correctly on mobile.</p>
+            <p>For the best experience, please view this site on a laptop or desktop computer.</p>
+            <div class="disclaimer-actions">
+                <button class="disclaimer-btn secondary" onclick="closeMobileDisclaimer()">Continue on Mobile</button>
+            </div>
+        </div>
+    </div>
 
     <nav>
         <div class="logo">K.WALTON_ <span>// MECHANICAL</span></div>
@@ -1247,6 +1348,25 @@ const liftFrame = document.getElementById('liftFrame');
     }
 
     // =======================================================
+    // 0. MOBILE DISCLAIMER BANNER
+    // =======================================================
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    function showMobileDisclaimer() {
+        const isDismissed = localStorage.getItem('mobileDismissed');
+        if (!isDismissed && isMobileDevice()) {
+            document.getElementById('mobileDisclaimer').classList.add('show');
+        }
+    }
+
+    function closeMobileDisclaimer() {
+        localStorage.setItem('mobileDismissed', 'true');
+        document.getElementById('mobileDisclaimer').classList.remove('show');
+    }
+
+    // =======================================================
     // 1. NAV SLIDER & INTERSECTION OBSERVER ENGINE
     // =======================================================
     const navLinks = document.querySelectorAll(".nav-link-item");
@@ -1304,6 +1424,8 @@ const liftFrame = document.getElementById('liftFrame');
     // 2. REAL-TIME THEME SANDBOX CONTROL ENGINE
     // =======================================================
     window.addEventListener('DOMContentLoaded', () => {
+        showMobileDisclaimer();
+        
         const rootElement = document.documentElement;
         const bgPicker = document.getElementById('bgPicker');
         const accentPicker = document.getElementById('accentPicker');
