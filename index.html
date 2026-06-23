@@ -35,6 +35,7 @@
     /* CENTRAL COLOR SCHEME CHANNELS */
                 --bg-primary: #12161a;
   --bg-secondary: #12161af2;
+  --bg-card: #1a2332;
   --accent-orange: #ffb088;
   --accent-glow: #ffb0881f;
   --text-main: #ffffff;
@@ -354,6 +355,7 @@
         border-bottom: 1px solid var(--border-color);
         max-width: 2400px;
         margin: 0 auto;
+        background-color: #0a0f14;
     }
 
         .section-header-container {
@@ -491,34 +493,74 @@
             position: relative;
             max-width: 2400px;
             border-bottom: 1px solid var(--border-color);
-            background: linear-gradient(180deg, var(--color-surface-soft) 0%, var(--color-surface-deep) 100%);
+            background: #000000;
             overflow: hidden;
         }
 
-        /* Twinkling Star Layer Effect */
+        /* Galaxy & Nebula Layers */
+        .launches-section::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(ellipse 1200px 800px at 15% 25%, rgba(150, 100, 200, 0.4) 0%, transparent 40%),
+                radial-gradient(ellipse 1000px 900px at 75% 60%, rgba(100, 150, 220, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse 800px 700px at 85% 15%, rgba(200, 120, 150, 0.32) 0%, transparent 50%),
+                radial-gradient(ellipse 950px 1000px at 25% 75%, rgba(120, 180, 200, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse 700px 600px at 50% 50%, rgba(180, 150, 220, 0.3) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(40px) brightness(1.3);
+        }
+
+        /* Star Field Layer */
         .launches-section::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                radial-gradient(1.5px 1.5px at 45px 80px, var(--text-main), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 120px 220px, var(--text-main), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 280px 140px, var(--accent-orange), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 420px 40px, var(--text-main), rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 600px 310px, var(--text-main), rgba(0,0,0,0)),
-                radial-gradient(2.5px 2.5px at 750px 190px, var(--text-main), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 910px 90px, var(--accent-orange), rgba(0,0,0,0));
-            background-size: 450px 450px;
-            opacity: 0.4;
-            animation: starryTwinkle 5s ease-in-out infinite alternate;
+                radial-gradient(3.2px 3.2px at 3% 8%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.8px 3.8px at 8% 15%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(2.8px 2.8px at 12% 28%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(3.4px 3.4px at 18% 35%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.1px 3.1px at 22% 48%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3.5px 3.5px at 28% 65%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(2.6px 2.6px at 35% 12%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.9px 3.9px at 42% 55%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 48% 78%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(3.3px 3.3px at 55% 22%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.2px 3.2px at 62% 38%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3.6px 3.6px at 68% 82%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(2.8px 2.8px at 72% 18%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.4px 3.4px at 78% 45%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3.1px 3.1px at 85% 72%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(3.7px 3.7px at 92% 35%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(2.9px 2.9px at 5% 60%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3.4px 3.4px at 38% 92%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(3.5px 3.5px at 65% 62%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.2px 3.2px at 95% 88%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(4.8px 4.8px at 20% 50%, var(--accent-orange), rgba(255,176,136,0.7) 40%, rgba(0,0,0,0)),
+                radial-gradient(4.4px 4.4px at 60% 30%, var(--accent-orange), rgba(255,176,136,0.7) 40%, rgba(0,0,0,0)),
+                radial-gradient(4.6px 4.6px at 75% 70%, var(--accent-orange), rgba(255,176,136,0.7) 40%, rgba(0,0,0,0)),
+                radial-gradient(4.1px 4.1px at 40% 75%, var(--accent-orange), rgba(255,176,136,0.7) 40%, rgba(0,0,0,0)),
+                radial-gradient(3.7px 3.7px at 10% 40%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 50% 10%, #ffffff, rgba(255,255,255,0.5) 60%, rgba(0,0,0,0)),
+                radial-gradient(3.4px 3.4px at 30% 25%, #ffffff, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+                radial-gradient(3.8px 3.8px at 70% 88%, #ffffff, rgba(255,255,255,0.55) 55%, rgba(0,0,0,0));
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            opacity: 1;
+            animation: starryTwinkle 7s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 3px rgba(255,255,255,0.6)) drop-shadow(0 0 6px rgba(255,176,136,0.4));
+
             pointer-events: none;
             z-index: 1;
         }
 
         @keyframes starryTwinkle {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.6; }
-            100% { opacity: 0.3; }
+            0% { opacity: 0.6; }
+            50% { opacity: 0.85; }
+            100% { opacity: 0.65; }
         }
 
         .launches-grid {
