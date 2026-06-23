@@ -32,18 +32,23 @@
         }
 
         :root {
-            --bg-dark: #12161a;
-            --bg-card: #1a2026;       
-            --text-main: #f3f4f6;     
-            --text-muted: #9ca3af;    
-            --accent-peach: #ffb088;   
-            --border-color: #2e3742;  
-            
-            --status-done: #22c55e;   
-            --status-active: #eab308; 
-            --status-future: #4b5563;
-        }
+    /* CENTRAL COLOR SCHEME CHANNELS */
+              --bg-primary: #12161a;
+  --bg-secondary: #12161af2;
+  --accent-orange: #77a474;
+  --accent-glow: #77a4741f;
+  --text-main: #ffffff;
 
+    --border-color: rgba(255, 255, 255, 0.1);
+    --accent-color: var(--accent-orange);
+
+      
+
+    /* --- ADD THESE FLOWCHART ENGINE STATUS COLORS HERE --- */
+    --status-done: #4ade80;     /* Green accent for completed classes */
+    --status-active: var(--accent-orange); /* Peach/Orange for current classes */
+    --status-future: #4b5563;   /* Muted grey for remaining schedule */
+}
         * {
             box-sizing: border-box;
             margin: 0;
@@ -55,37 +60,20 @@
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            padding-top: 75px; 
-            overflow-x: hidden;
-        }
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
 
         /* Fixed Navigation HUD */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(18, 22, 26, 0.95);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 5%;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        /* Your existing Navigation HUD styles */
-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(18, 22, 26, 0.95);
+    background-color: var(--bg-secondary);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
@@ -93,36 +81,35 @@ nav {
     padding: 1.2rem 5%;
     z-index: 1000;
     backdrop-filter: blur(5px);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
 
 /* --- PASTE THE NEW SLIDER STYLES RIGHT HERE --- */
 
-/* Container wrapping your links */
 .nav-links {
     position: relative; 
     display: flex;
     align-items: center;
-    gap: 1rem; /* Slightly tighter gap to fit 5 items cleanly */
+    gap: 1rem;
 }
 
-/* Slimmed down padding to keep the navbar height compact */
 .nav-link-item {
     position: relative;
     z-index: 2;
     text-decoration: none;
-    color: #ffffff;
-    padding: 0.3rem 0.8rem; /* Reduced from 0.5rem 1rem to shrink height */
+    color: var(--text-main);
+    padding: 0.3rem 0.8rem;
     font-size: 0.95rem;
     transition: color 0.3s ease;
 }
 
-/* The visual selection indicator box adjusting to the new slim size */
 .nav-indicator-box {
     position: absolute;
     z-index: 1;
     height: 100%;
-    background: rgba(255, 176, 136, 0.12);
-    border: 1px solid #ffb088;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-orange);
     border-radius: 4px;
     left: 0;
     width: 0;
@@ -130,9 +117,8 @@ nav {
     transition: all 0.38s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Active link highlight color */
 .nav-link-item.active {
-    color: #ffb088;
+    color: var(--accent-orange);
 }
 
         .nav-rocket-track {
@@ -200,7 +186,7 @@ nav {
             letter-spacing: -0.5px;
         }
 
-        .logo span { color: var(--accent-peach); }
+        .logo span { color: var(--accent-orange); }
 
         .nav-links a {
             color: var(--text-main);
@@ -211,7 +197,7 @@ nav {
             transition: color 0.3s ease;
         }
 
-        .nav-links a:hover { color: var(--accent-peach); }
+        .nav-links a:hover { color: var(--accent-orange); }
 
         /* Hero Section */
         .hero {
@@ -244,7 +230,7 @@ nav {
         .system-ticker {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            color: var(--accent-peach);
+            color: var(--accent-orange);
             margin-bottom: 1rem;
             letter-spacing: 2px;
             display: flex;
@@ -261,8 +247,8 @@ nav {
         }
 
         .hero h1 span {
-            color: var(--accent-peach);
-            text-shadow: 0 0 15px rgba(255, 176, 136, 0.15);
+            color: var(--accent-orange);
+            text-shadow: 0 0 15px var(--accent-glow-strong);
         }
 
         .hero p {
@@ -282,8 +268,8 @@ nav {
             display: inline-block;
             padding: 0.9rem 2.2rem;
             background-color: transparent;
-            color: var(--accent-peach);
-            border: 2px solid var(--accent-peach);
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
             font-family: 'JetBrains Mono', monospace;
             font-weight: 500;
             text-decoration: none;
@@ -293,10 +279,10 @@ nav {
         }
 
         .cta-btn:hover {
-            background-color: var(--accent-peach);
-            color: var(--bg-dark);
+            background-color: var(--accent-orange);
+            color: var(--text-main);
             font-weight: 600;
-            box-shadow: 0 0 20px rgba(255, 176, 136, 0.25);
+            box-shadow: 0 0 20px var(--accent-glow-strong);
             transform: translateY(-2px);
         }
 
@@ -309,7 +295,7 @@ nav {
             background-color: var(--text-main);
             color: var(--bg-dark);
             border-color: var(--text-main);
-            box-shadow: 0 0 20px rgba(243, 244, 246, 0.15);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
         /* Profile HUD Frame */
@@ -328,8 +314,8 @@ nav {
 
         .hud-profile-frame.is-hovered {
             transform: translateY(-8px);
-            border-color: var(--accent-peach);
-            box-shadow: 0 12px 30px rgba(255, 176, 136, 0.1);
+            border-color: var(--accent-orange);
+            box-shadow: 0 12px 30px var(--accent-glow-soft);
         }
 
         .hud-profile-frame img {
@@ -340,32 +326,35 @@ nav {
             height: 100%; 
             object-fit: cover; 
             z-index: 1;
-            background-color: #161b20;
+            background-color: var(--bg-card);
         }
 
         .hud-profile-frame::before {
             content: '';
             position: absolute;
             top: 12px; left: 12px; width: 16px; height: 16px;
-            border-top: 2px solid var(--accent-peach);
-            border-left: 2px solid var(--accent-peach);
+            border-top: 2px solid var(--accent-orange);
+            border-left: 2px solid var(--accent-orange);
             z-index: 3;
         }
         .hud-profile-frame::after {
             content: '';
             position: absolute;
             bottom: 12px; right: 12px; width: 16px; height: 16px;
-            border-bottom: 2px solid var(--accent-peach);
-            border-right: 2px solid var(--accent-peach);
+            border-bottom: 2px solid var(--accent-orange);
+            border-right: 2px solid var(--accent-orange);
             z-index: 3;
         }
 
         /* Interactive CAD Gallery */
-        .projects-section {
-            padding: 5rem 10%;
-            position: relative;
-            border-bottom: 1px solid var(--border-color);
-        }
+        /* Tightened layout tracking to match Starry Night's footprint */
+    .portfolio-section {
+        padding: 2rem 10% 4rem 10%; /* Much smaller top padding (2rem) to pull elements up */
+        position: relative;
+        border-bottom: 1px solid var(--border-color);
+        max-width: 2400px;
+        margin: 0 auto;
+    }
 
         .section-header-container {
             display: flex;
@@ -381,6 +370,14 @@ nav {
             display: inline-block;
         }
 
+        .section-title.section-title-spaced {
+            margin-bottom: 3rem;
+        }
+
+        .section-title.section-title-tight {
+            margin-bottom: 1rem;
+        }
+
         .section-title::after {
             content: '';
             position: absolute;
@@ -388,7 +385,7 @@ nav {
             left: 0;
             width: 50%;
             height: 2px;
-            background-color: var(--accent-peach);
+            background-color: var(--accent-orange);
         }
 
         .carousel-controls {
@@ -414,9 +411,9 @@ nav {
         }
 
         .carousel-arrow:hover {
-            border-color: var(--accent-peach);
+            border-color: var(--accent-orange);
             color: var(--bg-dark);
-            background-color: var(--accent-peach);
+            background-color: var(--accent-orange);
         }
 
         .projects-carousel-container {
@@ -452,14 +449,14 @@ nav {
 
         .project-card:hover {
             transform: translateY(-8px);
-            border-color: var(--accent-peach);
-            box-shadow: 0 12px 30px rgba(255, 176, 136, 0.1);
+            border-color: var(--accent-orange);
+            box-shadow: 0 12px 30px var(--accent-glow-soft);
         }
 
         model-viewer {
             width: 100%;
             height: 300px;
-            background-color: #161b20; 
+            background-color: var(--bg-card);
             --poster-color: transparent;
         }
 
@@ -474,7 +471,7 @@ nav {
         .project-tags {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            color: var(--accent-peach);
+            color: var(--accent-orange);
             margin-bottom: 1rem;
         }
 
@@ -485,15 +482,16 @@ nav {
             padding-top: 1rem;
             font-size: 0.85rem;
             font-family: 'JetBrains Mono', monospace;
-            color: #a3a3a3;
+            color: var(--text-muted);
         }
 
         /* "Starry Night" Themed High-Power Rocketry Section */
         .launches-section {
             padding: 5rem 10%;
             position: relative;
+            max-width: 2400px;
             border-bottom: 1px solid var(--border-color);
-            background: linear-gradient(180deg, #090d12 0%, #05070a 100%);
+            background: linear-gradient(180deg, var(--color-surface-soft) 0%, var(--color-surface-deep) 100%);
             overflow: hidden;
         }
 
@@ -503,13 +501,13 @@ nav {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                radial-gradient(1.5px 1.5px at 45px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 120px 220px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 280px 140px, #ffb088, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 420px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 600px 310px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2.5px 2.5px at 750px 190px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 910px 90px, #ffb088, rgba(0,0,0,0));
+                radial-gradient(1.5px 1.5px at 45px 80px, var(--text-main), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 220px, var(--text-main), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 280px 140px, var(--accent-orange), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 420px 40px, var(--text-main), rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 600px 310px, var(--text-main), rgba(0,0,0,0)),
+                radial-gradient(2.5px 2.5px at 750px 190px, var(--text-main), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 910px 90px, var(--accent-orange), rgba(0,0,0,0));
             background-size: 450px 450px;
             opacity: 0.4;
             animation: starryTwinkle 5s ease-in-out infinite alternate;
@@ -533,7 +531,7 @@ nav {
         }
 
         .launch-card {
-            background-color: rgba(26, 32, 38, 0.85); 
+            background-color: var(--bg-surface-overlay);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             overflow: hidden;
@@ -545,15 +543,15 @@ nav {
 
         .launch-card:hover {
             transform: translateY(-8px);
-            border-color: var(--accent-peach);
-            box-shadow: 0 12px 35px rgba(255, 176, 136, 0.15);
+            border-color: var(--accent-orange);
+            box-shadow: 0 12px 35px var(--accent-glow-strong);
         }
 
         /* portrait 3:4 Vertical Aspect Ratio */
         .launch-media-wrapper {
             width: 100%;
             aspect-ratio: 3 / 4;
-            background-color: #0b0f14;
+            background-color: var(--bg-dark);
             border-bottom: 1px solid var(--border-color);
             overflow: hidden;
             position: relative;
@@ -570,7 +568,7 @@ nav {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background-color: #070a0e;
+            background-color: var(--bg-canvas);
             display: block;
         }
 
@@ -591,7 +589,7 @@ nav {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--bg-dark);
-            background-color: var(--accent-peach);
+            background-color: var(--accent-orange);
             padding: 0.25rem 0.6rem;
             border-radius: 4px;
             font-weight: 600;
@@ -601,8 +599,8 @@ nav {
 
         .cert-badge.gallery-type {
             background-color: transparent;
-            border: 1px solid var(--accent-peach);
-            color: var(--accent-peach);
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
         }
 
         .launch-info-block p {
@@ -651,8 +649,8 @@ nav {
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
             font-size: 0.85rem;
-            color: var(--accent-peach);
-            border-left: 2px solid var(--accent-peach);
+            color: var(--accent-orange);
+            border-left: 2px solid var(--accent-orange);
             padding-left: 0.5rem;
         }
 
@@ -704,7 +702,7 @@ nav {
             text-transform: uppercase;
             margin-bottom: 1rem;
             letter-spacing: 1px;
-            border-left: 3px solid var(--accent-peach);
+            border-left: 3px solid var(--accent-orange);
             padding-left: 0.5rem;
         }
 
@@ -740,16 +738,16 @@ nav {
         .download-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            color: #a3a3a3;
+            color: var(--text-muted);
         }
 
         .mobile-resume-trigger {
             display: none;
             width: 100%;
             padding: 1.2rem;
-            background-color: rgba(255, 176, 136, 0.1);
-            border: 2px dashed var(--accent-peach);
-            color: var(--accent-peach);
+            background-color: var(--accent-glow-soft);
+            border: 2px dashed var(--accent-orange);
+            color: var(--accent-orange);
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
@@ -859,6 +857,73 @@ nav {
             .hero h1 { font-size: 2.3rem; }
             .projects-section, .resume-section { padding: 3.5rem 5%; }
         }
+
+        #themeControlPanel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            width: min(320px, calc(100vw - 40px));
+            background: var(--color-panel);
+            border: 2px solid var(--accent-orange);
+            padding: 18px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-main);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+        }
+
+        #themeControlPanel h4 {
+            margin: 0 0 12px 0;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+        }
+
+        .theme-control-row {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-control-row label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .theme-control-row input {
+            width: 80px;
+            height: 34px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        #themeControlPanel button {
+            width: 100%;
+            background: var(--accent-orange);
+            border: none;
+            color: var(--bg-primary);
+            padding: 10px 0;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #themeControlPanel button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px var(--accent-glow-strong);
+        }
     </style>
 </head>
 <body>
@@ -872,12 +937,12 @@ nav {
                     <defs>
                         <linearGradient id="trail-grad-scaled-1" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
                             <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
-                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
+                            <stop offset="100%" stop-color="var(--accent-orange)" stop-opacity="0.9" />
                         </linearGradient>
                     </defs>
                     <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-1)" stroke-width="3" stroke-linecap="round" />
-                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
-                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
+                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="var(--accent-orange)" />
+                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="var(--accent-orange)" />
                 </svg>
             </div>
         </div>
@@ -1012,7 +1077,7 @@ nav {
 </section>
 
     <section id="launches" class="launches-section">
-        <h2 class="section-title" style="margin-bottom: 3rem;">02 // High-Power Rocketry: Project "Starry Night"</h2>
+        <h2 class="section-title section-title-spaced">02 // High-Power Rocketry: Project "Starry Night"</h2>
          
         <div class="launches-grid">
 
@@ -1062,7 +1127,7 @@ nav {
     </section>
 
     <section id="flowchart" class="mines-section">
-        <h2 class="section-title" style="margin-bottom: 1rem;">03 // Mines Academic Flowchart Monitor</h2>
+        <h2 class="section-title section-title-tight">03 // Mines Academic Flowchart Monitor</h2>
         
         <div class="flowchart-legend">
             <div class="legend-item"><div class="legend-box" style="background-color: var(--status-done);"></div> Completed Course</div>
@@ -1172,70 +1237,129 @@ prevBtn.addEventListener('click', () => {
 });
 
 const liftFrame = document.getElementById('liftFrame');
-if (liftFrame) {
-    liftFrame.addEventListener('mouseenter', () => {
-        liftFrame.classList.add('is-hovered');
+    if (liftFrame) {
+        liftFrame.addEventListener('mouseenter', () => {
+            liftFrame.classList.add('is-hovered');
+        });
+        liftFrame.addEventListener('mouseleave', () => {
+            liftFrame.classList.remove('is-hovered');
+        });
+    }
+
+    // =======================================================
+    // 1. NAV SLIDER & INTERSECTION OBSERVER ENGINE
+    // =======================================================
+    const navLinks = document.querySelectorAll(".nav-link-item");
+    const indicator = document.querySelector(".nav-indicator-box");
+
+    function moveIndicator(element) {
+        if (!element || !indicator) return;
+        const targetLeft = element.offsetLeft;
+        const targetWidth = element.offsetWidth;
+        indicator.style.left = `${targetLeft}px`;
+        indicator.style.width = `${targetWidth}px`;
+    }
+
+    // Initialize layout dimensions cleanly on load
+    const initialActive = document.querySelector(".nav-link-item.active");
+    if (initialActive) {
+        setTimeout(() => moveIndicator(initialActive), 150);
+    }
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "-30% 0px -50% 0px", 
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const sectionId = entry.target.getAttribute("id");
+                navLinks.forEach((link) => {
+                    if (link.getAttribute("href") === `#${sectionId}`) {
+                        navLinks.forEach(l => l.classList.remove("active"));
+                        link.classList.add("active");
+                        moveIndicator(link);
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    navLinks.forEach((link) => {
+        const targetId = link.getAttribute("href");
+        if (targetId && targetId.startsWith("#")) {
+            const section = document.querySelector(targetId);
+            if (section) observer.observe(section);
+        }
     });
-    liftFrame.addEventListener('mouseleave', () => {
-        liftFrame.classList.remove('is-hovered');
+
+    window.addEventListener("resize", () => {
+        const activeLink = document.querySelector(".nav-link-item.active");
+        if (activeLink) moveIndicator(activeLink);
     });
-}
 
-// --- NAV SLIDER LOGIC ---
-const navLinks = document.querySelectorAll(".nav-link-item");
-const indicator = document.querySelector(".nav-indicator-box");
+    // =======================================================
+    // 2. REAL-TIME THEME SANDBOX CONTROL ENGINE
+    // =======================================================
+    window.addEventListener('DOMContentLoaded', () => {
+        const rootElement = document.documentElement;
+        const bgPicker = document.getElementById('bgPicker');
+        const accentPicker = document.getElementById('accentPicker');
+        const textPicker = document.getElementById('textPicker');
 
-function moveIndicator(element) {
-    if (!element || !indicator) return;
-    const targetLeft = element.offsetLeft;
-    const targetWidth = element.offsetWidth;
-    indicator.style.left = `${targetLeft}px`;
-    indicator.style.width = `${targetWidth}px`;
-}
+        if (bgPicker && accentPicker && textPicker) {
+            bgPicker.addEventListener('input', (e) => {
+                const color = e.target.value;
+                rootElement.style.setProperty('--bg-primary', color);
+                rootElement.style.setProperty('--bg-secondary', `${color}f2`);
+            });
 
-// Initialize immediately on load
-const initialActive = document.querySelector(".nav-link-item.active");
-if (initialActive) {
-    setTimeout(() => moveIndicator(initialActive), 150);
-}
+            accentPicker.addEventListener('input', (e) => {
+                const color = e.target.value;
+                rootElement.style.setProperty('--accent-orange', color);
+                rootElement.style.setProperty('--accent-glow', `${color}1f`);
+            });
 
-// Setup Intersection Observer
-const observerOptions = {
-    root: null,
-    rootMargin: "-30% 0px -50% 0px", 
-    threshold: 0
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            const sectionId = entry.target.getAttribute("id");
-            navLinks.forEach((link) => {
-                if (link.getAttribute("href") === `#${sectionId}`) {
-                    navLinks.forEach(l => l.classList.remove("active"));
-                    link.classList.add("active");
-                    moveIndicator(link);
-                }
+            textPicker.addEventListener('input', (e) => {
+                rootElement.style.setProperty('--text-main', e.target.value);
             });
         }
     });
-}, observerOptions);
 
-// Start tracking layout sections
-navLinks.forEach((link) => {
-    const targetId = link.getAttribute("href");
-    if (targetId && targetId.startsWith("#")) {
-        const section = document.querySelector(targetId);
-        if (section) observer.observe(section);
+    // Copies your live selections cleanly into your clipboard format
+    function copyPaletteConfig() {
+        const bgVal = document.getElementById('bgPicker').value;
+        const accentVal = document.getElementById('accentPicker').value;
+        const textVal = document.getElementById('textPicker').value;
+        
+        const values = `  --bg-primary: ${bgVal};\n  --bg-secondary: ${bgVal}f2;\n  --accent-orange: ${accentVal};\n  --accent-glow: ${accentVal}1f;\n  --text-main: ${textVal};`;
+        navigator.clipboard.writeText(values);
+        alert("Custom theme settings copied to clipboard! Paste them directly into your :root styles block.");
     }
-});
+</script>
 
-window.addEventListener("resize", () => {
-    const activeLink = document.querySelector(".nav-link-item.active");
-    if (activeLink) moveIndicator(activeLink);
-});
-    </script>
-
+    <div id="themeControlPanel">
+        <h4>Theme Sandbox</h4>
     
+        <div class="theme-control-row">
+            <label>Background:</label>
+            <input type="color" id="bgPicker" value="#12161a">
+        </div>
+    
+        <div class="theme-control-row">
+            <label>Accent Peach:</label>
+            <input type="color" id="accentPicker" value="#ffb088">
+        </div>
+    
+        <div class="theme-control-row">
+            <label>Text Main:</label>
+            <input type="color" id="textPicker" value="#ffffff">
+        </div>
+    
+        <button onclick="copyPaletteConfig()">Copy Hex Values</button>
+    </div>
+
 </body>
 </html>
