@@ -19,13 +19,10 @@
     <style>
 
         model-viewer {
-        /* Enforces the canvas to render sharply even when multiple models exist */
-            --min-hotspot-opacity: 0; 
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;   
+            --min-hotspot-opacity: 0;
+            image-rendering: crisp-edges;
         }
 
-        /* Force the internal canvas to match device pixel density */
         model-viewer::part(default-canvas) {
             width: 100%;
             height: 100%;
@@ -42,13 +39,9 @@
 
     --border-color: rgba(255, 255, 255, 0.1);
     --accent-color: var(--accent-orange);
-
-      
-
-    /* --- ADD THESE FLOWCHART ENGINE STATUS COLORS HERE --- */
-    --status-done: #4ade80;     /* Green accent for completed classes */
-    --status-active: var(--accent-orange); /* Peach/Orange for current classes */
-    --status-future: #4b5563;   /* Muted grey for remaining schedule */
+    --status-done: #4ade80;     /* Green for completed */
+    --status-active: var(--accent-orange); /* Orange for active */
+    --status-future: #4b5563;   /* Grey for pending */
 }
         * {
             box-sizing: border-box;
@@ -85,8 +78,6 @@
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-
-/* --- PASTE THE NEW SLIDER STYLES RIGHT HERE --- */
 
 .nav-links {
     position: relative; 
@@ -347,10 +338,9 @@
             z-index: 3;
         }
 
-        /* Interactive CAD Gallery */
-        /* Tightened layout tracking to match Starry Night's footprint */
+        /* CAD Portfolio Section */
     .portfolio-section {
-        padding: 2rem 10% 4rem 10%; /* Much smaller top padding (2rem) to pull elements up */
+        padding: 2rem 10% 4rem 10%;
         position: relative;
         border-bottom: 1px solid var(--border-color);
         max-width: 2400px;
@@ -589,7 +579,6 @@
             box-shadow: 0 12px 35px var(--accent-glow-strong);
         }
 
-        /* portrait 3:4 Vertical Aspect Ratio */
         .launch-media-wrapper {
             width: 100%;
             aspect-ratio: 3 / 4;
@@ -651,7 +640,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Mines Flowchart Monitor */
+        /* Flowchart & Course Tracking Section */
         .mines-section {
             padding: 5rem 10%;
             background-color: rgba(26, 32, 38, 0.4);
@@ -723,7 +712,7 @@
             background-color: var(--bg-card);
         }
 
-        /* Resume Section Layout */
+        /* Skills & Resume Section */
         .resume-section {
             padding: 6rem 10%;
             background-color: var(--bg-card);
@@ -974,7 +963,7 @@
             box-shadow: 0 8px 18px var(--accent-glow-strong);
         }
 
-        /* Mobile Disclaimer Banner */
+        /* Mobile Warning Modal */
         #mobileDisclaimer {
             display: none;
             position: fixed;
@@ -1059,7 +1048,7 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Disclaimer Banner -->
+    <!-- Mobile Warning Modal -->
     <div id="mobileDisclaimer">
         <div class="disclaimer-content">
             <h2>⚠️ Mobile Layout Notice</h2>
@@ -1422,7 +1411,7 @@ const liftFrame = document.getElementById('liftFrame');
         indicator.style.width = `${targetWidth}px`;
     }
 
-    // Initialize layout dimensions cleanly on load
+    // Initialize indicator position on page load
     const initialActive = document.querySelector(".nav-link-item.active");
     if (initialActive) {
         setTimeout(() => moveIndicator(initialActive), 150);
@@ -1492,7 +1481,7 @@ const liftFrame = document.getElementById('liftFrame');
         }
     });
 
-    // Copies your live selections cleanly into your clipboard format
+    // Copies current theme settings to clipboard
     function copyPaletteConfig() {
         const bgVal = document.getElementById('bgPicker').value;
         const accentVal = document.getElementById('accentPicker').value;
