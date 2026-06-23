@@ -79,6 +79,62 @@
             backdrop-filter: blur(5px);
         }
 
+        /* Your existing Navigation HUD styles */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(18, 22, 26, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 5%;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+/* --- PASTE THE NEW SLIDER STYLES RIGHT HERE --- */
+
+/* Container wrapping your links */
+.nav-links {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Slightly tighter gap to fit 5 items cleanly */
+}
+
+/* Slimmed down padding to keep the navbar height compact */
+.nav-link-item {
+    position: relative;
+    z-index: 2;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 0.3rem 0.8rem; /* Reduced from 0.5rem 1rem to shrink height */
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+/* The visual selection indicator box adjusting to the new slim size */
+.nav-indicator-box {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    background: rgba(255, 176, 136, 0.12);
+    border: 1px solid #ffb088;
+    border-radius: 4px;
+    left: 0;
+    width: 0;
+    pointer-events: none;
+    transition: all 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Active link highlight color */
+.nav-link-item.active {
+    color: #ffb088;
+}
+
         .nav-rocket-track {
             position: absolute;
             bottom: -1px; 
@@ -824,43 +880,20 @@
                     <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
                 </svg>
             </div>
-            <div class="rocket-assembly blip-2">
-                <svg viewBox="0 0 120 32" width="120" height="32" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="trail-grad-scaled-2" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
-                            <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
-                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
-                        </linearGradient>
-                    </defs>
-                    <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-2)" stroke-width="3" stroke-linecap="round" />
-                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
-                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
-                </svg>
-            </div>
-            <div class="rocket-assembly blip-3">
-                <svg viewBox="0 0 120 32" width="120" height="32" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="trail-grad-scaled-3" gradientUnits="userSpaceOnUse" x1="5" y1="16" x2="65" y2="16">
-                            <stop offset="0%" stop-color="#ffb088" stop-opacity="0" />
-                            <stop offset="100%" stop-color="#ffb088" stop-opacity="0.9" />
-                        </linearGradient>
-                    </defs>
-                    <line x1="5" y1="16" x2="65" y2="16" stroke="url(#trail-grad-scaled-3)" stroke-width="3" stroke-linecap="round" />
-                    <polygon points="63,13 55,5 64,5 71,13 71,19 64,27 55,27 63,19" fill="#ffb088" />
-                    <path d="M 63,12 L 95,12 Q 115,16 95,20 L 63,20 Z" fill="#ffb088" />
-                </svg>
-            </div>
         </div>
 
         <div class="nav-links">
-            <a href="#projects">CAD Portfolio</a>
-            <a href="#launches">Project Starry Night</a>
-            <a href="#flowchart">Mines Flowchart</a>
-            <a href="#resume">Resume</a>
+            <div class="nav-indicator-box"></div>
+
+                <a href="#hero" class="nav-link-item active">Intro Page</a>
+                <a href="#portfolio" class="nav-link-item">CAD Portfolio</a>
+                <a href="#launches" class="nav-link-item">Project Starry Night</a>
+                <a href="#flowchart" class="nav-link-item">Mines Flowchart</a>
+                <a href="#resume" class="nav-link-item">Resume</a>
         </div>
     </nav>
 
-    <section class="hero">
+    <section id="hero" class="hero">
         <div class="hero-content">
             <div class="system-ticker">
                 <span>[SYSTEM_STATUS: ACTIVE]</span>
@@ -880,7 +913,7 @@
         </div>
     </section>
 
-    <section id="projects" class="projects-section">
+    <section id="portfolio" class="portfolio-section">
     <div class="section-header-container">
         <h2 class="section-title">01 // Mechanical Design & Hardware Portfolio</h2>
         <div class="carousel-controls">
@@ -980,8 +1013,21 @@
 
     <section id="launches" class="launches-section">
         <h2 class="section-title" style="margin-bottom: 3rem;">02 // High-Power Rocketry: Project "Starry Night"</h2>
-        
+         
         <div class="launches-grid">
+
+            <div class="launch-card">
+                <div class="launch-media-wrapper">
+                    <img src="assets/starrynightplume.JPG" alt="Starry Night Exhaust Plume Profile">
+                </div>
+                <div class="launch-info-block">
+                    <div class="cert-badge gallery-type">FLIGHT PHOTOGRAPHY</div>
+                    <h3>Takeoff Shot</h3>
+                    <p>A close-up high-speed capture documenting the vibrant purple and steady-state kinetic flow expanding from the convergent-divergent graphite nozzle throat assembly during ascent.</p>
+                    <div class="tech-specs">DATA_01: Image Core Name // starrynightplume.jpg<br>DATA_02: Analysis Metrics // Shock Diamonds & Thermal Core Boundary</div>
+                </div>
+            </div>
+
             <div class="launch-card">
                 <div class="launch-media-wrapper">
                     <video autoplay loop muted controls playsinline preload="metadata">
@@ -992,7 +1038,7 @@
                 <div class="launch-info-block">
                     <div class="cert-badge">TRA / NAR LEVEL 1</div>
                     <h3>L1 Certification</h3>
-                    <p>High-power verification milestone achieved using an H-class solid propellant configuration. Validated main parachute ejection timing, deployment load dispersion constraints, and structural recovery airframe integrity post-landing.</p>
+                    <p>High-power verification milestone achieved using an I-300 solid propellant configuration. Validated main parachute ejection timing, deployment load dispersion constraints, and structural recovery airframe integrity post-landing.</p>
                     <div class="tech-specs">DATA_01: Motor Configuration // High-Impulse H-Class Stack<br>DATA_02: Recovery System // Mechanical Single Deployment</div>
                 </div>
             </div>
@@ -1007,22 +1053,11 @@
                 <div class="launch-info-block">
                     <div class="cert-badge">TRA / NAR LEVEL 2</div>
                     <h3>L2 Certification</h3>
-                    <p>Advanced aerospace certification execution deploying reloadable J-motor propulsion geometries. Engineered redundant dual-altimeter electronics bays, tracking transponders, and reinforced airframe matrices to mitigate transonic buffeting forces.</p>
+                    <p><p>Advanced aerospace certification execution deploying a reloadable J-425 motor. Validated main parachute ejection timing, deployment load dispersion constraints, and structural recovery airframe integrity post-landing.</p>
                     <div class="tech-specs">DATA_01: Motor Configuration // J-Class Reloadable Solid Fuel<br>DATA_02: Recovery System // Dual-Deployment Flight Computer</div>
                 </div>
             </div>
 
-            <div class="launch-card">
-                <div class="launch-media-wrapper">
-                    <img src="assets/starrynightplume.JPG" alt="Starry Night Exhaust Plume Profile">
-                </div>
-                <div class="launch-info-block">
-                    <div class="cert-badge gallery-type">FLIGHT PHOTOGRAPHY</div>
-                    <h3>Exhaust Plume</h3>
-                    <p>A close-up high-speed capture documenting the Mach disk structure and steady-state kinetic flow expanding from the convergent-divergent graphite nozzle throat assembly during stable ascent velocity vector arrays.</p>
-                    <div class="tech-specs">DATA_01: Image Core Name // starrynightplume.jpg<br>DATA_02: Analysis Metrics // Shock Diamonds & Thermal Core Boundary</div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1123,26 +1158,84 @@
 
     <script>
         const track = document.getElementById('carouselTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
-        nextBtn.addEventListener('click', () => {
-            const cardWidth = track.querySelector('.project-card').clientWidth + 40; 
-            track.scrollBy({ left: cardWidth, behavior: 'smooth' });
-        });
+nextBtn.addEventListener('click', () => {
+    const cardWidth = track.querySelector('.project-card').clientWidth + 40; 
+    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+});
 
-        prevBtn.addEventListener('click', () => {
-            const cardWidth = track.querySelector('.project-card').clientWidth + 40;
-            track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-        });
+prevBtn.addEventListener('click', () => {
+    const cardWidth = track.querySelector('.project-card').clientWidth + 40;
+    track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+});
 
-        const liftFrame = document.getElementById('liftFrame');
-        liftFrame.addEventListener('mouseenter', () => {
-            liftFrame.classList.add('is-hovered');
-        });
-        liftFrame.addEventListener('mouseleave', () => {
-            liftFrame.classList.remove('is-hovered');
-        });
+const liftFrame = document.getElementById('liftFrame');
+if (liftFrame) {
+    liftFrame.addEventListener('mouseenter', () => {
+        liftFrame.classList.add('is-hovered');
+    });
+    liftFrame.addEventListener('mouseleave', () => {
+        liftFrame.classList.remove('is-hovered');
+    });
+}
+
+// --- NAV SLIDER LOGIC ---
+const navLinks = document.querySelectorAll(".nav-link-item");
+const indicator = document.querySelector(".nav-indicator-box");
+
+function moveIndicator(element) {
+    if (!element || !indicator) return;
+    const targetLeft = element.offsetLeft;
+    const targetWidth = element.offsetWidth;
+    indicator.style.left = `${targetLeft}px`;
+    indicator.style.width = `${targetWidth}px`;
+}
+
+// Initialize immediately on load
+const initialActive = document.querySelector(".nav-link-item.active");
+if (initialActive) {
+    setTimeout(() => moveIndicator(initialActive), 150);
+}
+
+// Setup Intersection Observer
+const observerOptions = {
+    root: null,
+    rootMargin: "-30% 0px -50% 0px", 
+    threshold: 0
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute("id");
+            navLinks.forEach((link) => {
+                if (link.getAttribute("href") === `#${sectionId}`) {
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    link.classList.add("active");
+                    moveIndicator(link);
+                }
+            });
+        }
+    });
+}, observerOptions);
+
+// Start tracking layout sections
+navLinks.forEach((link) => {
+    const targetId = link.getAttribute("href");
+    if (targetId && targetId.startsWith("#")) {
+        const section = document.querySelector(targetId);
+        if (section) observer.observe(section);
+    }
+});
+
+window.addEventListener("resize", () => {
+    const activeLink = document.querySelector(".nav-link-item.active");
+    if (activeLink) moveIndicator(activeLink);
+});
     </script>
+
+    
 </body>
 </html>
