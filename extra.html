@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Extra Work — Karson Walton</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg-primary:#0d0f11;--text-main:#ffffff;--accent-orange:#ffb088;--border-color:rgba(255,255,255,0.08);--bg-card:#1a2332}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--bg-primary);color:var(--text-main);font-family:Inter, sans-serif;min-height:100vh}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;border-bottom:1px solid var(--border-color)}
+        .logo{font-family:JetBrains Mono, monospace;font-weight:700}
+        .nav-links a{color:var(--text-main);text-decoration:none;margin-left:1rem}
+        .container{max-width:1360px;margin:3rem auto;padding:0 4%;display:flex;justify-content:center}
+        .section-title{font-family:JetBrains Mono, monospace;margin-bottom:1rem}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 4%;border-bottom:1px solid rgba(255,255,255,0.08)}
+        .nav-links a{color:var(--text-main);text-decoration:none;margin-left:1rem;font-size:0.95rem;font-family:inherit;transition:color .2s ease}
+        .nav-links a:hover{color:var(--accent-orange)}
+        .project-card{background:linear-gradient(180deg, rgba(24,30,44,0.98), rgba(15,18,26,0.94));border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:2rem;box-shadow:0 24px 80px rgba(0,0,0,0.2)}
+        .project-overview{margin:1rem 0 1.75rem;color:rgba(255,255,255,0.74);line-height:1.85;max-width:920px}
+        .project-media{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;margin-bottom:1rem;align-items:stretch}
+        .project-media > div{display:flex;flex-direction:column;gap:0.85rem}
+        .project-media h3{font-size:1rem;margin-bottom:0.5rem;letter-spacing:0.01em}
+        img, video{width:100%;height:100%;max-height:720px;object-fit:cover;border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,0.18)}
+        @media (max-width:1024px){
+            .project-media{grid-template-columns:1fr;}
+            img, video{max-height:540px}
+        }
+        @media (max-width:680px){
+            nav{flex-direction:column;align-items:flex-start;gap:0.75rem}
+            .container{padding:0 5%}
+            .project-card{padding:1.5rem}
+        }
+        .note{font-size:0.95rem;color:rgba(255,255,255,0.65);margin-top:1rem}
+        .accent-text{color:var(--accent-orange);letter-spacing:0.06em;text-transform:uppercase;font-size:0.8rem;font-weight:700;margin-bottom:0.85rem;display:inline-block}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">K.WALTON_ <span style="color:var(--accent-orange)">// EXTRA</span></div>
+        <div class="nav-links"><a href="index.html">Home</a></div>
+    </nav>
+
+    <main class="container">
+        <section class="project-card">
+            <p class="accent-text">Trailmakers experiment</p>
+            <h2 class="section-title">Tracking Missile Guidance System</h2>
+            <p class="project-overview">The build is a tracker that receives the output from two position sensors tracking the x and y of the target, while also receiving its altitude. That means the tracker constantly receives the target's x, y, and z coordinates and compares them to its own position through subtraction to triangulate where it needs to point.</p>
+            <p class="project-overview">It uses the coordinate differences and inverse trig functions to compute the required angles in the x, y, and z directions. The compass block handles x/y plane orientation, while a separate angle sensor manages the z angle. Gyros then move the tracker until the actual and desired angles are aligned for both plane and vertical orientation.</p>
+            <div class="project-media">
+                <div>
+                    <h3>Logic Schematic</h3>
+                    <img src="assets/trailmakers_logic.png" alt="Trailmakers logic schematic">
+                </div>
+                <div>
+                    <h3>In-Game Demo</h3>
+                    <video controls autoplay muted playsinline>
+                        <source src="assets/trailmakers_demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <p class="note">The video shows the tracker engaging and following a target using sensor-based guidance rather than manual control.</p>
+        </section>
+
+    </main>
+</body>
+</html>
