@@ -895,72 +895,7 @@
             .projects-section, .resume-section { padding: 3.5rem 5%; }
         }
 
-        #themeControlPanel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10000;
-            width: min(320px, calc(100vw - 40px));
-            background: var(--color-panel);
-            border: 2px solid var(--accent-orange);
-            padding: 18px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--text-main);
-            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-        }
-
-        #themeControlPanel h4 {
-            margin: 0 0 12px 0;
-            color: var(--accent-orange);
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 0.08em;
-        }
-
-        .theme-control-row {
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .theme-control-row label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            flex: 1;
-        }
-
-        .theme-control-row input {
-            width: 80px;
-            height: 34px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        #themeControlPanel button {
-            width: 100%;
-            background: var(--accent-orange);
-            border: none;
-            color: var(--bg-primary);
-            padding: 10px 0;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        #themeControlPanel button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px var(--accent-glow-strong);
-        }
+        /* Theme sandbox removed - static theme in use */
 
         /* Mobile Warning Modal */
         #mobileDisclaimer {
@@ -1086,6 +1021,7 @@
                 <a href="#launches" class="nav-link-item">Project Starry Night</a>
                 <a href="#flowchart" class="nav-link-item">Mines Flowchart</a>
                 <a href="#resume" class="nav-link-item">Resume</a>
+                <a href="extra.html" class="nav-link-item">Extra</a>
         </div>
     </nav>
 
@@ -1450,68 +1386,11 @@ const liftFrame = document.getElementById('liftFrame');
         if (activeLink) moveIndicator(activeLink);
     });
 
-    // =======================================================
-    // 2. REAL-TIME THEME SANDBOX CONTROL ENGINE
-    // =======================================================
-    window.addEventListener('DOMContentLoaded', () => {
-        showMobileDisclaimer();
-        
-        const rootElement = document.documentElement;
-        const bgPicker = document.getElementById('bgPicker');
-        const accentPicker = document.getElementById('accentPicker');
-        const textPicker = document.getElementById('textPicker');
-
-        if (bgPicker && accentPicker && textPicker) {
-            bgPicker.addEventListener('input', (e) => {
-                const color = e.target.value;
-                rootElement.style.setProperty('--bg-primary', color);
-                rootElement.style.setProperty('--bg-secondary', `${color}f2`);
-            });
-
-            accentPicker.addEventListener('input', (e) => {
-                const color = e.target.value;
-                rootElement.style.setProperty('--accent-orange', color);
-                rootElement.style.setProperty('--accent-glow', `${color}1f`);
-            });
-
-            textPicker.addEventListener('input', (e) => {
-                rootElement.style.setProperty('--text-main', e.target.value);
-            });
-        }
-    });
-
-    // Copies current theme settings to clipboard
-    function copyPaletteConfig() {
-        const bgVal = document.getElementById('bgPicker').value;
-        const accentVal = document.getElementById('accentPicker').value;
-        const textVal = document.getElementById('textPicker').value;
-        
-        const values = `  --bg-primary: ${bgVal};\n  --bg-secondary: ${bgVal}f2;\n  --accent-orange: ${accentVal};\n  --accent-glow: ${accentVal}1f;\n  --text-main: ${textVal};`;
-        navigator.clipboard.writeText(values);
-        alert("Custom theme settings copied to clipboard! Paste them directly into your :root styles block.");
-    }
+    // Theme sandbox removed; keep minimal load initialization
+    window.addEventListener('DOMContentLoaded', () => { showMobileDisclaimer(); });
 </script>
 
-    <div id="themeControlPanel">
-        <h4>Theme Sandbox</h4>
-    
-        <div class="theme-control-row">
-            <label>Background:</label>
-            <input type="color" id="bgPicker" value="#12161a">
-        </div>
-    
-        <div class="theme-control-row">
-            <label>Accent Peach:</label>
-            <input type="color" id="accentPicker" value="#ffb088">
-        </div>
-    
-        <div class="theme-control-row">
-            <label>Text Main:</label>
-            <input type="color" id="textPicker" value="#ffffff">
-        </div>
-    
-        <button onclick="copyPaletteConfig()">Copy Hex Values</button>
-    </div>
+    <!-- Theme sandbox removed -->
 
 </body>
 </html>
